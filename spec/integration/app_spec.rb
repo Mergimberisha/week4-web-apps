@@ -43,4 +43,30 @@ describe Application do
       expect(response.body).to eq("Alice,Joe,Julia,Kieran,Zoe")
     end
   end
+
+  context "GET /tasks/new" do
+    it "should return the html form to create a new task" do
+      response = get("/tasks/new")
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<form method="POST" action="/tasks">')
+      expect(response.body).to include('<input type="text" name="task_name" />')
+    end
+  end
+
+  context "POST /tasks" do
+    it "should create task and return confirmation page" do
+      response = post("tasks", task_name: "Buy a dog")
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include ("<h1>You saved task: Buy a dog</h1>")
+    end
+
+    it "should create task and return confirmation page with a differnt name" do
+      response = post("tasks", task_name: "Sell a cat")
+
+      expect(response.status).to eq(200)
+      expect(response.body).to include ("<h1>You saved task: Sell a cat</h1>")
+    end
+  end
 end

@@ -1,4 +1,5 @@
 require "sinatra/base"
+require "sinatra/reloader"
 
 class Application < Sinatra::Base
   get "/hello" do
@@ -17,5 +18,15 @@ class Application < Sinatra::Base
     sort_names = params[:sort_names]
 
     return "#{sort_names.split(",").sort.join(",")}"
+  end
+
+  get "/tasks/new" do
+    return erb(:new_task)
+  end
+
+  post "/tasks" do
+    @task_name = params[:task_name]
+
+    return erb(:task_created)
   end
 end
